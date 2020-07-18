@@ -1,0 +1,31 @@
+server:
+  port: 8888
+spring:
+  application:
+    name: gmall-gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    gateway:
+      routes:
+        - id: pms-route
+          uri: lb://pms-server
+          predicates:
+            - Path=/pms/**
+        - id: pms-route
+          uri: lb://wms-server
+          predicates:
+            - Path=/wms/**
+        - id: pms-route
+          uri: lb://sms-server
+          predicates:
+            - Path=/sms/**
+        - id: pms-route
+          uri: lb://oms-server
+          predicates:
+            - Path=/oms/**
+        - id: pms-route
+          uri: lb://ums-server
+          predicates:
+            - Path=/ums/**
