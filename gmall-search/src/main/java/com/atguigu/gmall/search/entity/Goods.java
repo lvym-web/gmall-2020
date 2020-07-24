@@ -14,7 +14,7 @@ import java.util.List;
  * @since 2020/1/13 20:52
  */
 @Data
-@Document(indexName = "gmall",type = "goods")
+@Document(indexName = "gmall",type = "goods",shards = 3,replicas = 2)
 public class Goods {
 	@Id
 	private Long skuId;
@@ -25,7 +25,7 @@ public class Goods {
 	@Field(type = FieldType.Text,analyzer = "ik_max_word")
 	private String title;
 
-	@Field(type = FieldType.Double)
+	@Field(type = FieldType.Keyword)
 	private Double price;
 
 	@Field(type = FieldType.Long)

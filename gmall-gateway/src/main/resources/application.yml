@@ -13,19 +13,33 @@ spring:
           uri: lb://pms-server
           predicates:
             - Path=/pms/**
-        - id: pms-route
+        - id: wms-route
           uri: lb://wms-server
           predicates:
             - Path=/wms/**
-        - id: pms-route
+        - id: sms-route
           uri: lb://sms-server
           predicates:
             - Path=/sms/**
-        - id: pms-route
+        - id: oms-route
           uri: lb://oms-server
           predicates:
             - Path=/oms/**
-        - id: pms-route
+        - id: ums-route
           uri: lb://ums-server
           predicates:
             - Path=/ums/**
+        - id: index-route
+          uri: lb://index-server
+          predicates:
+            - Path=/api/index/**
+          filters:
+            - RewritePath=/api(?<segment>/?.*), $\{segment}
+            - Auth
+  main:
+    allow-bean-definition-overriding: true
+
+gmall:
+  jwt:
+    pubKeyPath: D:\\tmp\\rsa\\rsa.pub # 公钥地址
+    cookieName: GMALL_TOKEN

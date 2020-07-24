@@ -8,11 +8,13 @@ import java.util.Map;
 import com.atguigu.core.bean.PageVo;
 import com.atguigu.core.bean.QueryCondition;
 import com.atguigu.core.bean.Resp;
+import com.atguigu.gmall.pms.vo.CategoryVO;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,9 +36,22 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
+    @GetMapping("{pid}")
+    public Resp<List<CategoryVO>> queryCategoryByPidCategoryVO(@PathVariable(value = "pid", required = true) Long parentCid){
+        List<CategoryVO> categoryVOS = categoryService.queryCategoryVO(parentCid);
+        return Resp.ok(categoryVOS);
+    }
 
+
+    /**
+     *   查询一级分类
+     * @param parentCid
+     * @param level
+     * @return
+     */
     @GetMapping
-    public Resp<List<CategoryEntity>> queryCategoryByPidOrLevel(@RequestParam(value = "parentCid", required = false) Long parentCid, @RequestParam(value = "level", defaultValue = "0") Integer level) {
+    public Resp<List<CategoryEntity>> queryCategoryByPidOrLevel(@RequestParam(value = "parentCid", required = false) Long parentCid,
+                                                                @RequestParam(value = "level", defaultValue = "0") Integer level) {
         // 如果没传level,则level默认=0,即查询全部
         List<CategoryEntity> categories = categoryService.list(new LambdaQueryWrapper<CategoryEntity>()
                 .eq(level != 0, CategoryEntity::getCatLevel, level)

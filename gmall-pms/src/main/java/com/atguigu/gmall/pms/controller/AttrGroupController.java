@@ -8,6 +8,7 @@ import java.util.Map;
 import com.atguigu.core.bean.PageVo;
 import com.atguigu.core.bean.QueryCondition;
 import com.atguigu.core.bean.Resp;
+import com.atguigu.gmall.pms.vo.BaseGroupVO;
 import com.atguigu.gmall.pms.vo.GroupVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -32,6 +33,18 @@ import com.atguigu.gmall.pms.service.AttrGroupService;
 public class AttrGroupController {
     @Autowired
     private AttrGroupService attrGroupService;
+
+    /**
+     *     查询组及组下规格参数
+     * @param cid
+     * @param spuId
+     * @return
+     */
+    @GetMapping("item/group/{cid}/{spuId}")
+    public Resp<List<BaseGroupVO>> queryBaseGroupVOByCateIdAndSpuId(@PathVariable("cid") Long cid,@PathVariable("spuId") Long spuId){
+        List<BaseGroupVO> baseGroupVOS=attrGroupService.queryBaseGroupVOByCateIdAndSpuId(cid,spuId);
+        return Resp.ok(baseGroupVOS);
+    }
 
     /**
      * 查询分类下的组及规格参数

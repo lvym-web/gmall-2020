@@ -10,6 +10,7 @@ import com.atguigu.gmall.sms.vo.SkuSlaseVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import io.seata.spring.annotation.GlobalTransactional;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,6 @@ import com.atguigu.core.bean.PageVo;
 import com.atguigu.core.bean.Query;
 import com.atguigu.core.bean.QueryCondition;
 import com.atguigu.gmall.pms.dao.SpuInfoDao;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import java.util.Date;
 import java.util.List;
@@ -45,6 +45,8 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
     private AttrService attrService;
     @Autowired
     private PmsToSms pmsToSms;
+    @Autowired
+    private AmqpTemplate amqpTemplate;
 
     @Override
     public PageVo queryPage(QueryCondition params) {
@@ -95,6 +97,14 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
         getSkus(spuInfoVO, id);
 
 
+            this.sendMessage(id,"insert");
+
+
+    }
+
+    public void sendMessage(Long id, String type){
+        System.out.println("----------------->>>>>sendMessage");
+        amqpTemplate.convertAndSend("SPU_ITEM_EXCHANGE","item."+type,id);
     }
 
     public void getSkus(SpuInfoVO spuInfoVO, Long id) {

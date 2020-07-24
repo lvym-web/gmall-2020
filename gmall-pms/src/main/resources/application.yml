@@ -1,3 +1,12 @@
+spring:
+  rabbitmq:
+    host: 192.168.146.140
+    username: lvym
+    password: tbny1312
+    virtual-host: /lvym
+
+
+
 #server:
 #  port: 8081
 #spring:
@@ -17,3 +26,5 @@
 #    db-config:
 #      id-type: auto
 #  mapper-locations: classpath:mapper/pms/**/*.xml
+
+

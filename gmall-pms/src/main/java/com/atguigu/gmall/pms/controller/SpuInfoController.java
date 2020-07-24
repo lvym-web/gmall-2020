@@ -88,8 +88,6 @@ public class SpuInfoController {
     @PreAuthorize("hasAuthority('pms:spuinfo:save')")
     public Resp<Object> save(@RequestBody SpuInfoVO spuInfoVO){
 		spuInfoService.bigSave(spuInfoVO);
-        System.out.println("克里斯蒂恢复健康");
-        int i=100;
         return Resp.ok(null);
     }
 

@@ -24,21 +24,12 @@ public class GmallSearchApplicationTests {
     @Autowired
     private GoodsRepository goodsRepository;
     @Autowired
-    private PmsClient pmsClient;
+    private PmsClient gmallPmsFeign;
     @Autowired
     private WmsClient wmsClient;
 
     @Test
-   public void contextLoads() {
-
-        elasticsearchTemplate.createIndex(Goods.class);
-        elasticsearchTemplate.putMapping(Goods.class);
-
-    }
-
-    @Test
     public void importData() {
-
         elasticsearchTemplate.createIndex(Goods.class);
         elasticsearchTemplate.putMapping(Goods.class);
 
@@ -50,7 +41,7 @@ public class GmallSearchApplicationTests {
             QueryCondition queryCondition = new QueryCondition();
             queryCondition.setPage(pageNum);
             queryCondition.setLimit(pageSize);
-            Resp<List<SpuInfoEntity>> resp = pmsClient.page(queryCondition);
+            Resp<List<SpuInfoEntity>> resp = gmallPmsFeign.page(queryCondition);
             if (resp == null || CollectionUtils.isEmpty(resp.getData())) {
                 break;
             }
@@ -75,15 +66,14 @@ public class GmallSearchApplicationTests {
         } while (pageSize == 100); // 当前页记录数不等于100，则退出循环
     }
 
-
     private Goods buildGoods(SpuInfoEntity spuInfo) {
         Goods goods = new Goods();
-        Resp<List<SkuInfoEntity>> listResp = pmsClient.querySkuBySpuId(spuInfo.getId());
+        Resp<List<SkuInfoEntity>> listResp = gmallPmsFeign.querySkuBySpuId(spuInfo.getId());
         List<SkuInfoEntity> skus = listResp.getData();
         skus.forEach(skuInfo -> {
             goods.setSkuId(skuInfo.getSkuId());
             //查询搜索属性
-            Resp<List<ProductAttrValueEntity>> attrValueBySpuId = pmsClient.querySearchAttrValueBySpuId(spuInfo.getId());
+            Resp<List<ProductAttrValueEntity>> attrValueBySpuId = gmallPmsFeign.querySearchAttrValueBySpuId(spuInfo.getId());
             List<ProductAttrValueEntity> attrValueBySpuIdData = attrValueBySpuId.getData();
             // lambda的anyMatch使用
             // boolean b = attrValueBySpuIdData.stream().anyMatch(e -> e.getQuickShow() > 0);
@@ -99,24 +89,17 @@ public class GmallSearchApplicationTests {
             }
             goods.setBrandId(spuInfo.getBrandId());
             //查询品牌名称
-            Resp<BrandEntity> brandResp = pmsClient.queryBrandById(skuInfo.getBrandId());
+            Resp<BrandEntity> brandResp = gmallPmsFeign.queryBrandById(skuInfo.getBrandId());
             if (brandResp.getData() != null) {
                 goods.setBrandName(brandResp.getData().getName());
             }
             goods.setCategoryId(spuInfo.getCatalogId());
             //查询分类名称
-            Resp<CategoryEntity> categoryResp = pmsClient.queryCategoryById(skuInfo.getCatalogId());
+            Resp<CategoryEntity> categoryResp = gmallPmsFeign.queryCategoryById(skuInfo.getCatalogId());
             if (categoryResp.getData() != null) {
                 goods.setCategoryName(categoryResp.getData().getName());
             }
-
-            goods.setCreateTime(spuInfo.getCreateTime());
-            goods.setPic(skuInfo.getSkuDefaultImg());
-            goods.setPrice(skuInfo.getPrice().doubleValue());
-            goods.setSale(0L);
-            goods.setTitle(skuInfo.getSkuTitle());
-            goods.setSkuId(skuInfo.getSkuId());
-            //查询是否有货
+              //查询是否有货
             Resp<List<WareSkuEntity>> wareSkuBySkuId = wmsClient.queryWareSkuBySkuId(skuInfo.getSkuId());
 
             if (wareSkuBySkuId != null || !CollectionUtils.isEmpty(wareSkuBySkuId.getData())) {
@@ -125,6 +108,11 @@ public class GmallSearchApplicationTests {
 
                 goods.setStore(anyMatch);
             }
+            goods.setCreateTime(spuInfo.getCreateTime());
+            goods.setPic(skuInfo.getSkuDefaultImg());
+            goods.setPrice(skuInfo.getPrice().doubleValue());
+            goods.setSale(0L);
+            goods.setTitle(skuInfo.getSkuTitle());
 
         });
 
