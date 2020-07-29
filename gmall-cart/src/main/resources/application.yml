@@ -1,5 +1,5 @@
 server:
-  port: 8089
+  port: 8090
 spring:
   cloud:
     nacos:
@@ -7,11 +7,14 @@ spring:
         server-addr: 127.0.0.1:8848
   redis:
     host: 192.168.146.140
+  rabbitmq:
+    host: 192.168.146.140
+    username: lvym
+    password: tbny1312
+    virtual-host: /lvym
 gmall:
   jwt:
     pubKeyPath: D:\\tmp\\rsa\\rsa.pub # 公钥地址
-    priKeyPath: D:\\tmp\\rsa\\rsa.pri # 私钥地址
-    secret: sf3423jsdf#3$@FDS32
-    expire: 30 # 过期时间,单位分钟
     cookieName: GMALL_TOKEN
+    UserKey: user-key
 

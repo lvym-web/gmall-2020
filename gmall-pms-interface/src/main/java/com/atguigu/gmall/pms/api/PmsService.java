@@ -42,13 +42,19 @@ public interface PmsService {
     Resp<List<ProductAttrValueEntity>> querySearchAttrValueBySpuId(@PathVariable("spuId") Long spuId);
 
     /**
+     * 根据skuId查询搜索属性和值
+     */
+    @GetMapping("pms/skusaleattrvalue/sku/{skuId}")
+    Resp<List<SkuSaleAttrValueEntity>> querySkuSaleAttrValueBySkuId(@PathVariable("skuId") Long skuId);
+       /**
      * "详情查询"
      */
     @GetMapping("pms/spuinfo/info/{id}")
-     Resp<SpuInfoEntity> queryspuinfo(@PathVariable("id") Long id);
+    Resp<SpuInfoEntity> queryspuinfo(@PathVariable("id") Long id);
 
     /**
-     *   查询一级分类
+     * 查询一级分类
+     *
      * @param parentCid
      * @param level
      * @return
@@ -57,38 +63,47 @@ public interface PmsService {
     Resp<List<CategoryEntity>> queryCategoryByPidOrLevel(@RequestParam(value = "parentCid", required = false) Long parentCid, @RequestParam(value = "level", defaultValue = "0") Integer level);
 
     /**
-     *      查询二级三级分类
+     * 查询二级三级分类
+     *
      * @param parentCid
      * @return
      */
     @GetMapping("pms/category/{pid}")
-     Resp<List<CategoryVO>> queryCategoryByPidCategoryVO(@PathVariable(value = "pid", required = true) Long parentCid);
+    Resp<List<CategoryVO>> queryCategoryByPidCategoryVO(@PathVariable(value = "pid", required = true) Long parentCid);
+
     /**
      * 详情查询
      */
     @GetMapping("pms/skuinfo/info/{skuId}")
     Resp<SkuInfoEntity> querySkuinfoById(@PathVariable("skuId") Long skuId);
+
     /**
      * 查询图片列表
+     *
      * @param skuId
      * @return
      */
     @GetMapping("pms/skuimages/{skuId}")
-    Resp<List<SkuImagesEntity>> querySkuImagesBySkiId(@PathVariable("skuId")Long skuId);
+    Resp<List<SkuImagesEntity>> querySkuImagesBySkiId(@PathVariable("skuId") Long skuId);
+
     /**
      * 查询销售属性
+     *
      * @param spuId
      * @return
      */
     @GetMapping("pms/skusaleattrvalue/{spuId}")
     Resp<List<SkuSaleAttrValueEntity>> querySkuSaleAttrValueBySpuId(@PathVariable("spuId") Long spuId);
+
     /**
      * 海报信息
      */
     @GetMapping("pms/spuinfodesc/info/{spuId}")
     Resp<SpuInfoDescEntity> querySpuInfoDesc(@PathVariable("spuId") Long spuId);
+
     /**
-     *     查询组及组下规格参数
+     * 查询组及组下规格参数
+     *
      * @param cid
      * @param spuId
      * @return

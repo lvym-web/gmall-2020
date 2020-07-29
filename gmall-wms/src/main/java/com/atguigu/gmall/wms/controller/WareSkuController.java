@@ -8,11 +8,13 @@ import java.util.Map;
 import com.atguigu.core.bean.PageVo;
 import com.atguigu.core.bean.QueryCondition;
 import com.atguigu.core.bean.Resp;
+import com.atguigu.gmall.wms.vo.SkuLockVO;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import com.atguigu.gmall.wms.entity.WareSkuEntity;
@@ -34,6 +36,21 @@ import com.atguigu.gmall.wms.service.WareSkuService;
 public class WareSkuController {
     @Autowired
     private WareSkuService wareSkuService;
+
+    /**
+     * 检查并锁定库存
+     * @param skuLockVOS
+     * @return
+     */
+    @PostMapping
+    public Resp<Object> checkAndLockStore(@RequestBody List<SkuLockVO> skuLockVOS){
+
+       String msg=wareSkuService.checkAndLockStore(skuLockVOS);
+       if (StringUtils.isEmpty(msg)){
+           return Resp.ok("锁定成功");
+       }
+        return Resp.fail(msg);
+    }
 
     /**
      *  获取某个sku的库存信息

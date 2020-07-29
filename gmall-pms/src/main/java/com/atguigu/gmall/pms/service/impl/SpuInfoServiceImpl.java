@@ -103,7 +103,7 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
     }
 
     public void sendMessage(Long id, String type){
-        System.out.println("----------------->>>>>sendMessage");
+
         amqpTemplate.convertAndSend("SPU_ITEM_EXCHANGE","item."+type,id);
     }
 

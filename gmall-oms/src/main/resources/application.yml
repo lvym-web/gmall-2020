@@ -1,0 +1,29 @@
+server:
+  port: 8084
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+  datasource:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://192.168.146.140/guli_oms?useSSL=false&serverTimeZone=GMT%2B8&characterEncoding=UTF-8
+      username: root
+      password: 123456
+  redis:
+    host: 192.168.146.140
+  rabbitmq:
+    host: 192.168.146.140
+    username: lvym
+    password: tbny1312
+    virtual-host: /lvym
+gmall:
+  jwt:
+    pubKeyPath: D:\\tmp\\rsa\\rsa.pub # 公钥地址
+    cookieName: GMALL_TOKEN
+
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto
+  mapper-locations: classpath:mapper/oms/**/*.xml

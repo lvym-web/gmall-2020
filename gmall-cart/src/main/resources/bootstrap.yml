@@ -1,6 +1,6 @@
 spring:
   application:
-    name: auth-server
+    name: cart-server
   cloud:
     nacos:
       config:

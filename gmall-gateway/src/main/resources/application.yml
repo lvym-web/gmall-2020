@@ -36,6 +36,12 @@ spring:
           filters:
             - RewritePath=/api(?<segment>/?.*), $\{segment}
             - Auth
+        - id: order-route
+          uri: lb://order-server
+          predicates:
+            - Path=/api/order/**
+          filters:
+            - RewritePath=/api(?<segment>/?.*), $\{segment}
   main:
     allow-bean-definition-overriding: true
 
