@@ -13,22 +13,32 @@ spring:
           uri: lb://pms-server
           predicates:
             - Path=/pms/**
+          filters:
+            - Auth
         - id: wms-route
           uri: lb://wms-server
           predicates:
             - Path=/wms/**
+          filters:
+            - Auth
         - id: sms-route
           uri: lb://sms-server
           predicates:
             - Path=/sms/**
+          filters:
+            - Auth
         - id: oms-route
           uri: lb://oms-server
           predicates:
             - Path=/oms/**
+          filters:
+            - Auth
         - id: ums-route
           uri: lb://ums-server
           predicates:
             - Path=/ums/**
+          filters:
+            - Auth
         - id: index-route
           uri: lb://index-server
           predicates:
@@ -42,6 +52,7 @@ spring:
             - Path=/api/order/**
           filters:
             - RewritePath=/api(?<segment>/?.*), $\{segment}
+            - Auth  #自定义的拦截器
   main:
     allow-bean-definition-overriding: true
 
