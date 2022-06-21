@@ -27,7 +27,7 @@
       <mybatisplus.version>3.0.7.1</mybatisplus.version>    <!--不用这版本报错-->
         <nacos.version>0.2.2.RELEASE</nacos.version>
         <!--<mybatisplus.version>3.2.0</mybatisplus.version>-->
-        <mysql.version>8.0.18</mysql.version>
+        <mysql.version>8.0.28</mysql.version>
         <swagger.version>2.9.2</swagger.version>
     </properties>
 
